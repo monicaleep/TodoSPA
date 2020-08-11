@@ -1,3 +1,8 @@
+# ToDo List as a SPA
+- Originally following the uDemy course
+- I plan to make this "my own" by refactoring from jQuery's AJAX to use fetch API
+
+
 # Setup Instructions
 
 - Paste the following into your terminal - `git clone git@github.com:nax3t/ajax-jquery-tutorial.git`
