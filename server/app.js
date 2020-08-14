@@ -4,7 +4,7 @@ mongoose = require("mongoose"),
 bodyParser = require("body-parser"),
 expressSanitizer = require("express-sanitizer");
 
-mongoose.connect("mongodb://localhost/todo_app",{useNewUrlParser:true, useUnifiedTopology: true});
+mongoose.connect("mongodb://localhost/todo_app",{useNewUrlParser:true, useUnifiedTopology: true, useFindAndModify: false});
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressSanitizer());
