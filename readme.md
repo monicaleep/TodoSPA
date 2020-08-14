@@ -1,9 +1,15 @@
 # ToDo List as a SPA
 - Originally following the uDemy course [Build a Single Page Application with jQuery & AJAX](https://www.udemy.com/course/jquery-ajax/)
 - I plan to make this "my own" by refactoring from jQuery's AJAX to use fetch API
+
+
+### From the course
 - Refactored a mult-page app to a SPA using AJAX
 - Use Gulp in the build process to transpile template literal syntax, fetch syntax
-
+  - Original project used some outdated packages, including gulp. Had to make some changes
+- Separated the monolithic application into separate "client" and "server" apps. Enabled CORS as an implication of this.
+  - Run the server with `nodemon`
+  - Run the client using python Simple HTTP server 
 
 
 > # Setup Instructions

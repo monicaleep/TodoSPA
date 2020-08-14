@@ -2,15 +2,21 @@ var express = require("express"),
 app     = express(),
 mongoose = require("mongoose"),
 bodyParser = require("body-parser"),
-expressSanitizer = require("express-sanitizer"),
-methodOverride = require('method-override');
+expressSanitizer = require("express-sanitizer");
 
 mongoose.connect("mongodb://localhost/todo_app",{useNewUrlParser:true, useUnifiedTopology: true});
-app.use(express.static('public'));
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressSanitizer());
-app.set("view engine", "ejs");
-app.use(methodOverride('_method'));
+
+//allow cross origin sharing from our server
+app.use(function(req,res,next){
+  //localhost:8000 is our port , need to update upon deployment
+  res.header("Access-Control-Allow-Origin","http://localhost:8000");
+  res.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods","GET, POST, PUT, DELETE");
+  next();
+});
 
 var todoSchema = new mongoose.Schema({
   text: String,
@@ -18,29 +24,19 @@ var todoSchema = new mongoose.Schema({
 
 var Todo = mongoose.model("Todo", todoSchema);
 
-app.get("/", function(req, res){
-  res.redirect("/todos");
-});
+
 
 app.get("/todos", function(req, res){
   Todo.find({}, function(err, todos){
     if(err){
       console.log(err);
     } else {
-      //if the request is an ajax request, send the todos as json
-      if (req.xhr){
-        res.json(todos)
-        //otherwise if the request is regular, render the inddex page with todos passed to ejs
-      } else{
-        res.render("index", {todos: todos});
-      }
+        res.json(todos);
     }
   })
 });
 
-app.get("/todos/new", function(req, res){
- res.render("new");
-});
+
 
 app.post("/todos", function(req, res){
  req.body.todo.text = req.sanitize(req.body.todo.text);
@@ -54,16 +50,7 @@ app.post("/todos", function(req, res){
   });
 });
 
-app.get("/todos/:id/edit", function(req, res){
- Todo.findById(req.params.id, function(err, todo){
-   if(err){
-     console.log(err);
-     res.redirect("/")
-   } else {
-      res.render("edit", {todo: todo});
-   }
- });
-});
+
 
 app.put("/todos/:id", function(req, res){
  Todo.findByIdAndUpdate(req.params.id, req.body.todo, {new:true},function(err, todo){
