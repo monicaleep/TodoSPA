@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
   // get and render all list items
   $.get('http://localhost:3000/todos', function(todos) {
  	todos.forEach(function(todo){
@@ -27,7 +26,21 @@ $(document).ready(function(){
  			`
  			)
  	})
- });
+});
+
+  $(".search").keyup(function(e){
+    let search = $(this).val();
+    const todos = $(".list-group-item");
+    todos.each(function(){
+      let text = $(this).children('span').text();
+      if(!text.includes(search)){
+        $(this).css("display","none")
+      }
+      else{
+        $(this).css("display","block")
+      }
+    })
+  })
 
   // in order to make the post request, we need to listen for a submission on the form!
   $('#new-todo-form').submit(function(e){
